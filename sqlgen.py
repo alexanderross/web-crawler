@@ -1,3 +1,6 @@
+
+
+
 class sqlgen:
 
 	f=""
@@ -32,18 +35,21 @@ class sqlgen:
 	
 	
 	def prepareTeamSQL(self,line):
-		queryLine="INSERT INTO teams (id,name,wins,losses,rank,image_code,league_id,created_at,updated_at) VALUES ('"+line[3][1]+"','"+line[1][1]+"',0,0,0,'"+line[4][1]+"',"+str(self.current_league_id)+",now(),now());"
+		queryLine="INSERT INTO teams (id,name,wins,losses,rank,image_code,league_id,created_at,updated_at) VALUES ('"+line[3][1]+"','"+self.scrub_line(line[1][1])+"',0,0,0,'"+line[4][1]+"',"+str(self.current_league_id)+",now(),now());"
 		self.prepare_teams.append(queryLine)
 		
 	def prepareCatSQL(self,line):
-		queryLine="INSERT INTO team_categories (id,name,created_at,updated_at)VALUES('"+line[3][1]+"','"+line[1][1]+"',now(),now());"
+		queryLine="INSERT INTO team_categories (id,name,created_at,updated_at)VALUES('"+line[3][1]+"','"+self.scrub_line(line[1][1])+"',now(),now());"
 		self.current_cat_id=line[3][1]
 		self.prepare_cats.append(queryLine)
 
 	def prepareLeagueSQL(self,line):
-		queryLine="INSERT INTO leagues (id,category_id,name,created_at,updated_at)VALUES('"+line[3][1]+"',"+str(self.current_cat_id)+",'"+line[1][1]+"',now(),now());"
+		queryLine="INSERT INTO leagues (id,category_id,name,created_at,updated_at)VALUES('"+line[3][1]+"',"+str(self.current_cat_id)+",'"+self.scrub_line(line[1][1])+"',now(),now());"
 		self.current_league_id=line[3][1]
 		self.prepare_leagues.append(queryLine)
+	
+	def scrub_line(self,line):
+		return line.replace("'","")
 			
 	def makeSQL(self):
 		for entry in self.prepare_cats:

@@ -1,6 +1,13 @@
 import urllib
 from array import *
 
+''''
+What!?
+The run-down:
+This class is a semi intelligent (think community college) web crawler. 
+Start off by inputting your domain into 'getPageContent' and setting to a variable.
+
+'''
 
 class webparse:
 	current_cat=""
@@ -10,6 +17,12 @@ class webparse:
 	def __init__(self):
 		pass
 	
+	''''
+	url: target URL
+	start: the tag fragment to look for to start analyzing
+	sub: the tag fragment to grab (href, image, any inline closed element.)
+	recurse: not doing anything... yet
+	'''
 	def getPageContent(self,url,start,sub,recurse):
 		sock = urllib.urlopen(url)
 		content = sock.read() 
@@ -51,7 +64,22 @@ class webparse:
 		for entry in self.tagTypes:
 			if(marker_context.find("<"+entry+" ")>-1):
 				return entry;
-				
+	
+	''''
+	data: a data list from getPageContent
+	tags: the attributes to record in the array (for an 'a' tag, 'href', 'title' etc.)
+	filter: A list containing filter commands:
+		ALLOW=>[string]
+		   Allow any entry containing the string
+		DENY=>
+		   Deny any entry containing the string
+		ISOLATE>>[new_attribute]=>[attribute].[start]*[end] :: Implies ALLOW
+		   Add another [tag] dynamically by looking for content between a [start] and [end] tag within a certain [attrbute] of the target element
+		CATEGORIZE=>[attribute].[ALLOW string] :: Implies ALLOW
+		   Categorize all following entries by a category [attribute] after hitting finding [ALLOW string] in an entry.
+		   
+	recurse: not doing anything... yet
+	'''		
 	def processArray(self,data,tags,filter,remove):
 		returnArray=[]
 		tempArray=[]
