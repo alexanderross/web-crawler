@@ -153,8 +153,3 @@ class webparse:
 					return True
 		return returnVal
 					
-				
-			
-			
-				
-		

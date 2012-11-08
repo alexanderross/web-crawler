@@ -24,6 +24,8 @@ for result in resPro:
 	print(str(i)+" of "+str(p)+" done.")
 	
 sq.makeSQL()
+
+
 	
 	
 
